@@ -1,12 +1,16 @@
-import React from 'react';
-import ProjectSummary from './ProjectSummary';
+import React from "react";
+import ProjectSummary from "./ProjectSummary";
 
-const ProjectsList = () => {
+const ProjectsList = props => {
   return (
     <div className="project-list section">
-      <ProjectSummary />
-      <ProjectSummary />
-      <ProjectSummary />
+      {props.projects.length === 0 ? (
+        <p>No Projects</p>
+      ) : (
+        props.projects.map((project, i) => (
+          <ProjectSummary key={i} project={project} />
+        ))
+      )}
     </div>
   );
 };

@@ -7,6 +7,7 @@ import SignIn from "./components/auth/SignIn";
 import SignUp from "./components/auth/SignUp";
 import CreateProject from "./components/projects/CreateProject";
 import styles from './App.module.css';
+import LoadingPage from './components/layout/LoadingPage';
 
 class App extends Component {
   render() {
@@ -20,6 +21,7 @@ class App extends Component {
             <Route path="/signin" component={SignIn} />
             <Route path="/signup" component={SignUp} />
             <Route path="/create" component={CreateProject} />
+            <Route path="/loading" component={LoadingPage} />
           </Switch>
         </div>
       </BrowserRouter>

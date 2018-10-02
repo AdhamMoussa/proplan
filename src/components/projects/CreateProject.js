@@ -1,6 +1,9 @@
 import React, { Component } from "react";
-import styles from './CreateProject.module.css';
-export default class CreateProject extends Component {
+import styles from "./CreateProject.module.css";
+import { connect } from "react-redux";
+import { startAddProject } from "../../store/actions/projects";
+
+class CreateProject extends Component {
   state = {
     title: "",
     content: ""
@@ -15,11 +18,12 @@ export default class CreateProject extends Component {
     e.preventDefault();
     const title = this.state.title;
     const content = this.state.content;
-    console.log(title, content);
     this.setState(() => ({
       title: "",
       content: ""
     }));
+    this.props.startAddProject({ title, content });
+    this.props.history.push('/');
   };
   render() {
     return (
@@ -59,3 +63,14 @@ export default class CreateProject extends Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    startAddProject: project => dispatch(startAddProject(project))
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(CreateProject);
