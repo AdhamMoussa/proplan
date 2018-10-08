@@ -1,18 +1,21 @@
 import React from "react";
+import PropTypes from "prop-types";
 import ProjectSummary from "./ProjectSummary";
 
-const ProjectsList = props => {
-  return (
-    <div className="project-list section">
-      {props.projects.length === 0 ? (
-        <p>No Projects</p>
-      ) : (
-        props.projects.map((project, i) => (
-          <ProjectSummary key={i} project={project} />
-        ))
-      )}
-    </div>
-  );
+const ProjectsList = ({ projects }) => (
+  <div className="project-list section">
+    {projects.length === 0 ? (
+      <p>No Projects</p>
+    ) : (
+      projects.map(project => (
+        <ProjectSummary key={project.id} project={project} />
+      ))
+    )}
+  </div>
+);
+
+ProjectsList.propTypes = {
+  projects: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default ProjectsList;

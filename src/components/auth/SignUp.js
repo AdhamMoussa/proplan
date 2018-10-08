@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styles from "./SignUp.module.css";
+
 export default class SignUp extends Component {
   state = {
     firstName: "",
@@ -7,18 +8,17 @@ export default class SignUp extends Component {
     email: "",
     password: ""
   };
+
   handleChange = (e, state) => {
-    const value = e.target.value;
+    const { value } = e.target;
     this.setState(() => ({
       [state]: value
     }));
   };
+
   handleSubmit = e => {
     e.preventDefault();
-    const firstName = this.state.firstName;
-    const lastName = this.state.lastName;
-    const email = this.state.email;
-    const password = this.state.password;
+    const { firstName, lastName, email, password } = this.state;
     console.log(firstName, lastName, email, password);
     this.setState(() => ({
       firstName: "",
@@ -27,7 +27,9 @@ export default class SignUp extends Component {
       password: ""
     }));
   };
+
   render() {
+    const { firstName, lastName, email, password } = this.state;
     return (
       <div className="container">
         <div className={styles.SignUp}>
@@ -36,7 +38,7 @@ export default class SignUp extends Component {
             <div className="input-field">
               <label htmlFor="firstName">First Name</label>
               <input
-                value={this.state.firstName}
+                value={firstName}
                 type="text"
                 name="firstName"
                 id="firstName"
@@ -46,7 +48,7 @@ export default class SignUp extends Component {
             <div className="input-field">
               <label htmlFor="lastName">Last Name</label>
               <input
-                value={this.state.lastName}
+                value={lastName}
                 type="text"
                 name="lastName"
                 id="lastName"
@@ -56,7 +58,7 @@ export default class SignUp extends Component {
             <div className="input-field">
               <label htmlFor="email">Email</label>
               <input
-                value={this.state.email}
+                value={email}
                 type="email"
                 name="email"
                 id="email"
@@ -66,7 +68,7 @@ export default class SignUp extends Component {
             <div className="input-field">
               <label htmlFor="password">Password</label>
               <input
-                value={this.state.password}
+                value={password}
                 type="password"
                 name="password"
                 id="password"

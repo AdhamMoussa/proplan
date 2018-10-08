@@ -6,23 +6,26 @@ export default class SignIn extends Component {
     email: "",
     password: ""
   };
+
   handleChange = (e, state) => {
-    const value = e.target.value;
+    const { value } = e.target;
     this.setState(() => ({
       [state]: value
     }));
   };
+
   handleSubmit = e => {
     e.preventDefault();
-    const email = this.state.email;
-    const password = this.state.password;
+    const { email, password } = this.state;
     console.log(email, password);
     this.setState(() => ({
       email: "",
       password: ""
     }));
   };
+
   render() {
+    const { email, password } = this.state;
     return (
       <div className="container">
         <div className={styles.SignIn}>
@@ -31,7 +34,7 @@ export default class SignIn extends Component {
             <div className="input-field">
               <label htmlFor="email">Email</label>
               <input
-                value={this.state.email}
+                value={email}
                 type="email"
                 name="email"
                 id="email"
@@ -41,7 +44,7 @@ export default class SignIn extends Component {
             <div className="input-field">
               <label htmlFor="password">Password</label>
               <input
-                value={this.state.password}
+                value={password}
                 type="password"
                 name="password"
                 id="password"

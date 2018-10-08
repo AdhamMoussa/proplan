@@ -1,31 +1,37 @@
 import React, { Component } from "react";
-import styles from "./CreateProject.module.css";
+import PropTypes from "prop-types";
+import ReactRouterPropTypes from "react-router-prop-types";
 import { connect } from "react-redux";
 import { startAddProject } from "../../store/actions/projects";
+import styles from "./CreateProject.module.css";
 
 class CreateProject extends Component {
   state = {
     title: "",
     content: ""
   };
+
   handleChange = (e, state) => {
-    const value = e.target.value;
+    const { value } = e.target;
     this.setState(() => ({
       [state]: value
     }));
   };
+
   handleSubmit = e => {
     e.preventDefault();
-    const title = this.state.title;
-    const content = this.state.content;
+    const { title, content } = this.state;
+    const { startAddProject, history } = this.props;
     this.setState(() => ({
       title: "",
       content: ""
     }));
-    this.props.startAddProject({ title, content });
-    this.props.history.push('/');
+    startAddProject({ title, content });
+    history.push("/");
   };
+
   render() {
+    const { title, content } = this.state;
     return (
       <div className="container">
         <div className={styles.CreateProject}>
@@ -34,7 +40,7 @@ class CreateProject extends Component {
             <div className="input-field">
               <label htmlFor="title">Title</label>
               <input
-                value={this.state.title}
+                value={title}
                 type="text"
                 name="title"
                 id="title"
@@ -45,7 +51,7 @@ class CreateProject extends Component {
               <label htmlFor="content">Content</label>
               <textarea
                 className="materialize-textarea"
-                value={this.state.content}
+                value={content}
                 type="text"
                 name="content"
                 id="content"
@@ -64,11 +70,14 @@ class CreateProject extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    startAddProject: project => dispatch(startAddProject(project))
-  };
+CreateProject.propTypes = {
+  history: ReactRouterPropTypes.history.isRequired,
+  startAddProject: PropTypes.func.isRequired
 };
+
+const mapDispatchToProps = dispatch => ({
+  startAddProject: project => dispatch(startAddProject(project))
+});
 
 export default connect(
   null,

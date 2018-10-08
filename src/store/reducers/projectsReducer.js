@@ -1,27 +1,43 @@
 const defaultState = {
   projectsList: [],
   isFetching: false,
-  error: null
+  error: ""
 };
 
 const projectsReducer = (state = defaultState, action) => {
   switch (action.type) {
-    case "ADD_PROJECT_REQUEST":
+    // Fetching request
+    case "FETCHING_REQUEST":
       return {
         ...state,
         isFetching: true
       };
-    case "ADD_PROJECT_SUCCESS":
+    // Fetching failure
+    case "FETCHING_FAIL":
+      return {
+        ...state,
+        error: action.error
+      };
+    // Set
+    case "SET_PROJECTS":
+      return {
+        projectsList: action.projects,
+        isFetching: false,
+        error: ""
+      };
+    // ADD
+    case "ADD_PROJECT":
       return {
         projectsList: [...state.projectsList, action.project],
         isFetching: false,
-        error: null
+        error: ""
       };
-    case "ADD_PROJECT_FAILURE":
+    // Remove
+    case "REMOVE_PROJECT":
       return {
-        ...state,
+        projects: state.projects.map(project => project.id !== action.id),
         isFetching: false,
-        error: action.error
+        error: ""
       };
     default:
       return state;

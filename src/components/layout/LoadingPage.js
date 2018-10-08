@@ -1,11 +1,5 @@
-import React from 'react';
+import React from "react";
 
-const LoadingPage = () => {
-  return (
-    <div>
-      LOADING....
-    </div>
-  );
-};
+const LoadingPage = () => <div>LOADING....</div>;
 
 export default LoadingPage;
