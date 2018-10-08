@@ -35,7 +35,9 @@ const projectsReducer = (state = defaultState, action) => {
     // Remove
     case "REMOVE_PROJECT":
       return {
-        projects: state.projects.map(project => project.id !== action.id),
+        projectsList: state.projectsList.filter(
+          project => project.id !== action.id
+        ),
         isFetching: false,
         error: ""
       };
