@@ -1,6 +1,7 @@
 const defaultState = {
   projectsList: [],
   isFetching: false,
+  projectsFetched: false,
   error: ""
 };
 
@@ -16,6 +17,7 @@ const projectsReducer = (state = defaultState, action) => {
     case "FETCHING_FAIL":
       return {
         ...state,
+        isFetching: false,
         error: action.error
       };
     // Set
@@ -23,11 +25,13 @@ const projectsReducer = (state = defaultState, action) => {
       return {
         projectsList: action.projects,
         isFetching: false,
+        projectsFetched: true,
         error: ""
       };
     // ADD
     case "ADD_PROJECT":
       return {
+        ...state,
         projectsList: [...state.projectsList, action.project],
         isFetching: false,
         error: ""
@@ -35,6 +39,7 @@ const projectsReducer = (state = defaultState, action) => {
     // Remove
     case "REMOVE_PROJECT":
       return {
+        ...state,
         projectsList: state.projectsList.filter(
           project => project.id !== action.id
         ),

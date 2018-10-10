@@ -1,11 +1,19 @@
 import React from "react";
 import PropTypes from "prop-types";
 import ReactRouterPropTypes from "react-router-prop-types";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { startRemoveProject } from "../../store/actions/projects";
 import LoadingPage from "../layout/LoadingPage";
 
-const ProjectDetails = ({ match, history, project, startRemoveProject }) => {
+const ProjectDetails = ({
+  match,
+  history,
+  project,
+  isFetching,
+  projectsFetched,
+  startRemoveProject
+}) => {
   const { id } = match.params;
   const removeProjectHandler = () => {
     startRemoveProject(id);
@@ -41,6 +49,13 @@ const ProjectDetails = ({ match, history, project, startRemoveProject }) => {
       </div>
     );
   }
+  if (!isFetching && projectsFetched)
+    return (
+      <div>
+        <p>This project is not available!!!</p>
+        <Link to="/">Return to Dashboard</Link>
+      </div>
+    );
   return <LoadingPage />;
 };
 
@@ -48,17 +63,25 @@ ProjectDetails.propTypes = {
   match: ReactRouterPropTypes.match.isRequired,
   history: ReactRouterPropTypes.history.isRequired,
   project: PropTypes.shape({
-    id: PropTypes.string,
-    title: PropTypes.string,
-    content: PropTypes.string
-  }).isRequired,
-  startRemoveProject: PropTypes.func.isRequired
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired
+  }),
+  startRemoveProject: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool.isRequired,
+  projectsFetched: PropTypes.bool.isRequired
+};
+
+ProjectDetails.defaultProps = {
+  project: null
 };
 
 const mapStateToProps = (state, props) => ({
   project: state.projects.projectsList.find(
     project => project.id === props.match.params.id
-  )
+  ),
+  isFetching: state.projects.isFetching,
+  projectsFetched: state.projects.projectsFetched
 });
 
 const mapDispatchToProps = dispatch => ({
