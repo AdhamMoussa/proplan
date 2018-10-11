@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { Router, Switch } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import createHistory from "history/createBrowserHistory";
 import NavBar from "./components/layout/NavBar";
 import Dashboard from "./components/dashboard/Dashboard";
 import ProjectDetails from "./components/projects/ProjectDetails";
@@ -10,7 +11,11 @@ import SignUp from "./components/auth/SignUp";
 import CreateProject from "./components/projects/CreateProject";
 import styles from "./App.module.css";
 import { startSetProjects } from "./store/actions/projects";
+import WelcomePage from "./components/layout/WelcomePage";
+import PublicRoute from "./routes/PublicRoute";
+import PrivateRoute from "./routes/PrivateRoute";
 
+export const history = createHistory();
 class App extends Component {
   componentDidMount() {
     const { startSetProjects } = this.props;
@@ -19,18 +24,19 @@ class App extends Component {
 
   render() {
     return (
-      <BrowserRouter>
+      <Router history={history}>
         <div className={styles.App}>
           <NavBar />
           <Switch>
-            <Route path="/" component={Dashboard} exact />
-            <Route path="/projects/:id" component={ProjectDetails} />
-            <Route path="/signin" component={SignIn} />
-            <Route path="/signup" component={SignUp} />
-            <Route path="/create" component={CreateProject} />
+            <PublicRoute path="/" component={WelcomePage} exact />
+            <PublicRoute path="/signin" component={SignIn} />
+            <PublicRoute path="/signup" component={SignUp} />
+            <PrivateRoute path="/dashboard" component={Dashboard} />
+            <PrivateRoute path="/projects/:id" component={ProjectDetails} />
+            <PrivateRoute path="/create" component={CreateProject} />
           </Switch>
         </div>
-      </BrowserRouter>
+      </Router>
     );
   }
 }
