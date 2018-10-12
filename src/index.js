@@ -7,6 +7,7 @@ import "./index.css";
 import { firebase } from "./firebase/firebase";
 import { login, logout } from "./store/actions/auth";
 import LoadingPage from "./components/layout/LoadingPage";
+import { startSetProjects } from "./store/actions/projects";
 
 const store = configureStore();
 
@@ -28,13 +29,15 @@ ReactDOM.render(<LoadingPage />, document.getElementById("root"));
 
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
-    store.dispatch(login(user.uid));
-    renderApp();
+    if (!store.getState().auth.authenticated) {
+      store.dispatch(login(user.uid));
+    }
+    store.dispatch(startSetProjects());
   } else if (store.getState().auth.authenticated) {
     store.dispatch(logout());
     history.push("/");
   } else {
     history.push("/");
-    renderApp();
   }
+  renderApp();
 });

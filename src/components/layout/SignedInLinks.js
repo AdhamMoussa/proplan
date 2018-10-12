@@ -8,7 +8,7 @@ const SignedInLinks = ({ startLogout }) => (
       <NavLink to="/create">New Project</NavLink>
     </li>
     <li>
-      <button type="button" onClick={startLogout}>
+      <button className="btn transparent" type="button" onClick={startLogout}>
         Log Out
       </button>
     </li>

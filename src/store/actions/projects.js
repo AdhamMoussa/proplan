@@ -1,4 +1,5 @@
-import database from "../../firebase/firebase";
+import uuid from "uuid";
+import database, { firebase } from "../../firebase/firebase";
 
 // Fetching request action
 const fetchingRequest = () => ({
@@ -17,20 +18,27 @@ const setProjects = projects => ({
   projects
 });
 
-export const startSetProjects = () => dispatch => {
+export const startSetProjects = () => (dispatch, getState) => {
+  // user id
+  const { uid } = getState().auth;
   dispatch(fetchingRequest());
+  // get projects from DB
   database
-    .collection("projects")
+    .collection("users")
+    .doc(uid)
     .get()
     .then(snapshot => {
-      const projects = [];
-      snapshot.docs.forEach(project => {
-        projects.push({
-          id: project.id,
-          ...project.data()
+      const { projects } = snapshot.data();
+      const projectsList = [];
+      if (projects && Object.keys(projects).length > 0) {
+        Object.keys(projects).forEach(key => {
+          projectsList.push({
+            id: key,
+            ...projects[key]
+          });
         });
-      });
-      dispatch(setProjects(projects));
+      }
+      dispatch(setProjects(projectsList));
     })
     .catch(error => {
       dispatch(fetchingFail(error.toString()));
@@ -43,25 +51,31 @@ const addProject = project => ({
   project
 });
 
-export const startAddProject = project => dispatch => {
+export const startAddProject = project => (dispatch, getState) => {
+  // user id
+  const { uid } = getState().auth;
+  // project ID
+  const projectID = uuid();
+
   dispatch(fetchingRequest());
-  // async call
+  const ref = `projects.${projectID}`;
+  // add project to DB
   database
-    .collection("projects")
-    .add(project)
-    .then(doc =>
-      database
-        .collection("projects")
-        .doc(doc.id)
-        .get()
-    )
-    .then(snapshot => {
-      const newProject = {
-        id: snapshot.id,
-        ...snapshot.data()
-      };
-      dispatch(addProject(newProject));
+    .collection("users")
+    .doc(uid)
+    .update({
+      [ref]: { ...project }
     })
+    // then >> dispatch
+    .then(() => {
+      dispatch(
+        addProject({
+          id: projectID,
+          ...project
+        })
+      );
+    })
+    // catch and dispatch errors
     .catch(error => {
       dispatch(fetchingFail(error.toString()));
     });
@@ -73,13 +87,19 @@ const removeProject = id => ({
   id
 });
 
-export const startRemoveProject = id => dispatch => {
+export const startRemoveProject = id => (dispatch, getState) => {
+  // user id
+  const { uid } = getState().auth;
+
+  const ref = `projects.${id}`;
   dispatch(fetchingRequest());
   // async call
   database
-    .collection("projects")
-    .doc(id)
-    .delete()
+    .collection("users")
+    .doc(uid)
+    .update({
+      [ref]: firebase.firestore.FieldValue.delete()
+    })
     .then(() => {
       dispatch(removeProject(id));
     })
