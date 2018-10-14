@@ -21,12 +21,13 @@ class CreateProject extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const { title, content } = this.state;
-    const { startAddProject, history } = this.props;
+    const { startAddProject, history, user } = this.props;
+    const author = `${user.firstName} ${user.lastName}`;
     this.setState(() => ({
       title: "",
       content: ""
     }));
-    startAddProject({ title, content });
+    startAddProject({ title, content, author });
     history.push("/");
   };
 
@@ -72,14 +73,23 @@ class CreateProject extends Component {
 
 CreateProject.propTypes = {
   history: ReactRouterPropTypes.history.isRequired,
-  startAddProject: PropTypes.func.isRequired
+  startAddProject: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    firstName: PropTypes.string.isRequired,
+    lastName: PropTypes.string.isRequired,
+    uid: PropTypes.string.isRequired
+  }).isRequired
 };
+
+const mapStateToProps = state => ({
+  user: state.auth.user
+});
 
 const mapDispatchToProps = dispatch => ({
   startAddProject: project => dispatch(startAddProject(project))
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(CreateProject);

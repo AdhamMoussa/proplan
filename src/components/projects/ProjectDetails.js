@@ -20,7 +20,7 @@ const ProjectDetails = ({
     history.push("/");
   };
   if (project) {
-    const { title, content } = project;
+    const { title, content, author } = project;
     return (
       <div className="container section project-details">
         <div className="card z-depth-0">
@@ -31,7 +31,7 @@ const ProjectDetails = ({
           <div className="card-action grey lighten-4 grey-text">
             <div className="row">
               <div className="col left">
-                <div>Posted by Adham Moussa</div>
+                <div>Posted by {author}</div>
                 <div>2nd September, 2am</div>
               </div>
               <div className="col right">
