@@ -1,6 +1,10 @@
 const defaultState = {
   authenticated: false,
-  uid: ""
+  user: {
+    uid: "",
+    firstName: "",
+    lastName: ""
+  }
 };
 
 const authReducer = (state = defaultState, action) => {
@@ -8,12 +12,11 @@ const authReducer = (state = defaultState, action) => {
     case "LOGIN":
       return {
         authenticated: true,
-        uid: action.uid
+        user: action.user
       };
     case "LOGOUT":
       return {
-        authenticated: false,
-        uid: ""
+        ...defaultState
       };
     default:
       return state;

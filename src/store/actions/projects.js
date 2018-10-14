@@ -19,7 +19,7 @@ const setProjects = projects => ({
 
 export const startSetProjects = () => (dispatch, getState) => {
   // user id
-  const { uid } = getState().auth;
+  const { uid } = getState().auth.user;
   dispatch(fetchingRequest());
   // get projects from DB
   database
@@ -48,7 +48,7 @@ const addProject = project => ({
 
 export const startAddProject = project => (dispatch, getState) => {
   // user id
-  const { uid } = getState().auth;
+  const { uid } = getState().auth.user;
 
   dispatch(fetchingRequest());
   // add project to DB
@@ -84,7 +84,7 @@ const removeProject = id => ({
 
 export const startRemoveProject = id => (dispatch, getState) => {
   // user id
-  const { uid } = getState().auth;
+  const { uid } = getState().auth.user;
 
   dispatch(fetchingRequest());
   // async call

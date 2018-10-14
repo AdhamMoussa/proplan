@@ -24,7 +24,7 @@ const NavBar = ({ auth, startLogout }) => (
 NavBar.propTypes = {
   auth: PropTypes.shape({
     authenticated: PropTypes.bool.isRequired,
-    uid: PropTypes.string.isRequired
+    user: PropTypes.object.isRequired
   }).isRequired,
   startLogout: PropTypes.func.isRequired
 };

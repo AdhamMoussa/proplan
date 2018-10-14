@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import styles from "./SignIn.module.css";
 import { startLogin } from "../../store/actions/auth";
 
@@ -19,7 +17,6 @@ class SignIn extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const { startLogin } = this.props;
     this.setState(() => ({
       email: "",
       password: ""
@@ -66,15 +63,4 @@ class SignIn extends Component {
   }
 }
 
-SignIn.propTypes = {
-  startLogin: PropTypes.func.isRequired
-};
-
-const mapDispatchToProps = dispatch => ({
-  startLogin: credentials => dispatch(startLogin(credentials))
-});
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(SignIn);
+export default SignIn;

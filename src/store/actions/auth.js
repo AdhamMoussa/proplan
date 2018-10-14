@@ -1,21 +1,24 @@
-import { firebase } from "../../firebase/firebase";
+import database, { firebase } from "../../firebase/firebase";
 
-export const login = uid => ({
+export const login = user => ({
   type: "LOGIN",
-  uid
+  user
 });
 
 export const logout = () => ({
   type: "LOGOUT"
 });
 
-export const startLogin = ({ email, password }) => dispatch =>
+export const startLogin = ({ email, password }) =>
   firebase
     .auth()
     .signInWithEmailAndPassword(email, password)
-    .then(credentials => {
-      dispatch(login(credentials.user.uid));
-    });
+    .then(credentials =>
+      database
+        .collection("users")
+        .doc(credentials.user.uid)
+        .get()
+    );
 
 export const startLogout = () => dispatch =>
   firebase
